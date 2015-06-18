@@ -52,13 +52,13 @@ namespace OpenGLForm{
 			if(!histogram_index.empty())
 			{
 				
-				//draw date(1-31) on the front
-				//int text_position_x = 60;
-				//for(int i=0;i<31;i++)
-				//{
-				//	DrawText_FTGL(i+1,text_position_x,y_position-10,16.0);
-				//	text_position_x += 10;
-				//}
+				//draw hour(0-23) on the front
+				int text_position_x = 60;
+				for(int i=0;i<24;i++)
+				{
+					DrawText_FTGL(i,text_position_x,y_position-10,16.0);
+					text_position_x += 10;
+				}
 				
 				raw_data_position_table.resize(histogram_index.size());
 				for(int i=0;i<histogram_index.size();i++) raw_data_position_table[i].resize( preprocessing_data.raw_data_3D_array[ histogram_index[i] ].rows );
@@ -70,8 +70,11 @@ namespace OpenGLForm{
 					//DrawTime_FTGL(preprocessing_data.month_vec[i].this_year,10,y_position+5);
 					//for(int j=histogram_index[i];j<histogram_index[i]+600;j++)
 					int idx = histogram_index[i];
-					//DrawText_FTGL(preprocessing_data.month_vec[idx].this_year,10,y_position+7,20.0);
-					//DrawText_FTGL(preprocessing_data.month_vec[idx].this_month,30,y_position+7,20.0);
+					Mat result = preprocessing_data.find_month_and_day(idx).clone();
+					int this_month = result.at<int>(0,0);
+					int this_day = result.at<int>(0,1);
+					DrawText_FTGL(this_month+1,10,y_position+10,15.0);
+					DrawText_FTGL(this_day+1,20,y_position+10,15.0);
 					
 					for(int j=0;j<preprocessing_data.raw_data_3D_array[idx].rows;j++)
 					{

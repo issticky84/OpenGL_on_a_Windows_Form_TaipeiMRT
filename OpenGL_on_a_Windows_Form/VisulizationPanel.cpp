@@ -5,7 +5,7 @@ namespace OpenGLForm{
 	ReadCSV read_csv;
 	Preprocessing_Data preprocessing_data;
 	char quote[24][80];
-	char title[4][80];
+	char title[6][200];
 	char five_minutes[12][80];
 	vector<vector4> histogram_position_table;
 	vector<int> histogram_index;

@@ -111,7 +111,7 @@ void Preprocessing_Data::start3(vector<month> month_vec_read,int day_amount_read
 
 	//==============K means clustering with no speed up==================//
 	
-    int k = 6; 
+    //int k = 6; 
     Mat cluster_tag; //Tag:0~k-1
     int attempts = 2;//應該是執行次數
 	Mat cluster_centers;
@@ -3511,7 +3511,7 @@ void Preprocessing_Data::Position_by_histogram_sort_index(Mat& histo_position,Ma
 			vote_dist += abs( histogram_copy.at<int>(index,j) - histogram_copy.at<int>(index2,j) );
 		}
 
-		dist.at<double>(0,i) = pow(vote_dist,3);
+		dist.at<double>(0,i) = pow(vote_dist,2);
 	}
 	output_mat_as_csv_file_double("vote_dist.csv",dist.t());
 	
@@ -3532,4 +3532,39 @@ void Preprocessing_Data::Position_by_histogram_sort_index(Mat& histo_position,Ma
 		int index = histo_sort_index.at<int>(i,0);
 		histo_position.at<double>(index,0) = histo_position_sort.at<double>(i,0);
 	}
+}
+
+Mat Preprocessing_Data::find_month_and_day(int num)
+{
+	Mat result = Mat::zeros(1,2,CV_32S);
+	int count = 0;
+	int month,day;
+	for(int i=0;i<month_vec.size();i++)
+	{
+		for(int j=0;j<month_vec[i].day_vec.size();j++)
+		{
+			if(count==num)
+			{
+				month = i;
+				day = j;
+				break;
+			}
+			count++;
+		}
+		if(count==num) break;
+	}
+
+	result.at<int>(0,0) = month;
+	result.at<int>(0,1) = day;
+
+	static bool flag = false;
+	if(flag==false)
+	{
+		flag = true;
+		ofstream fout("test.txt");
+		if(num==120)
+			fout << month << " " << day << endl;
+		fout.close();
+	}
+	return result;
 }

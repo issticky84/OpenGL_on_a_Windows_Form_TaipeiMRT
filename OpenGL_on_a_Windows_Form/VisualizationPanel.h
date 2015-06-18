@@ -24,7 +24,7 @@ namespace OpenGLForm{
 	extern Preprocessing_Data preprocessing_data;
 	extern	vector<RECTANGLE*> recycle;
 	extern char quote[24][80];
-	extern char title[4][80];
+	extern char title[6][200];
 	extern char five_minutes[12][80];
 	extern vector<vector4> histogram_position_table;
 	extern vector<int> histogram_index;

@@ -101,6 +101,7 @@ public:
 	Mat raw_data_3D_array[400];
 	int zellers_congruence_for_week(int,int,int);
 	bool check_holiday(vector<holiday>,int,int,int);
+	Mat find_month_and_day(int);
 };
 
 

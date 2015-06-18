@@ -41,8 +41,61 @@ namespace OpenGLForm{
 			
 			if(!raw_data_index_2D.empty())
 			{	
-					int x_position = 200;
-					int y_position = 150;
+					//int x_position = 200;
+					//int y_position = 150;
+					int x_position[] = {70,70,550,550,950,950};
+					int y_position[] = {100,500,100,500,100,500};
+					for(int dim=0;dim<6;dim++)
+					{
+						DrawTitle_FTGL(dim,x_position[dim],y_position[dim]-50);
+						for(int i=0;i<raw_data_index_2D.size();i++)
+						{				
+							RECTANGLE *rect;
+							int index1 = raw_data_index_2D[i][0];
+							int index2 = raw_data_index_2D[i][1];
+							int count = 0;
+							int month,day;
+							for(int i=0;i<preprocessing_data.month_vec.size();i++)
+							{
+								for(int j=0;j<preprocessing_data.month_vec[i].day_vec.size();j++)
+								{
+									if(count==index1)
+									{
+										month = i;
+										day = j;
+										break;
+									}
+									count++;
+								}
+								if(count==index1) break;
+							}
+
+							int r=1.0,g=1.0,b=1.0;
+
+							//DrawText_FTGL(preprocessing_data.month_vec[index1].this_year, x_position-150, y_position + 10, r, g, b);
+							//DrawText_FTGL_Zero_Padding(preprocessing_data.month_vec[index1].this_month, x_position-100, y_position + 10, r, g, b);
+							//DrawText_FTGL_Zero_Padding(index2+1, x_position-70, y_position + 10, r, g, b);
+							float value = 0.004*abs(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[dim]);
+							DrawText_FTGL(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[dim], x_position[dim] + value + 10, y_position[dim] + 10, 1.0, 1.0, 1.0);
+						
+							rect = new RECTANGLE();
+							rect->h = 30.0;
+							rect->w = value;
+							rect->x = x_position[dim];
+							rect->y = y_position[dim];
+							color[0] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,0);
+							color[1] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,1);
+							color[2] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,2);
+
+							DrawRectWithOpenGL(rect,color);
+							delete(rect);
+
+							y_position[dim]+=35;
+						}					
+					}
+					/*
+					//x_position = 750;
+					//y_position = 150;
 					for(int i=0;i<raw_data_index_2D.size();i++)
 					{				
 						RECTANGLE *rect;
@@ -64,63 +117,17 @@ namespace OpenGLForm{
 							}
 							if(count==index1) break;
 						}
-
-						int r=1.0,g=1.0,b=1.0;
-						/*
-						if(preprocessing_data.month_vec[index1].day_vec[index2].IsHoliday)
-						{
-							r = g = 0.0;
-							b = 1.0;
-						}
-						int this_week = preprocessing_data.zellers_congruence_for_week(preprocessing_data.month_vec[index1].this_year,
-																					   preprocessing_data.month_vec[index1].this_month,
-																					   preprocessing_data.month_vec[index1].day_vec[index2].date);
-						if(this_week==6 || this_week==7)
-						{
-							r = 1.0;
-							g = b = 0.0;
-						}
-						*/
-						//DrawText_FTGL(preprocessing_data.month_vec[index1].this_year, x_position-150, y_position + 10, r, g, b);
-						//DrawText_FTGL_Zero_Padding(preprocessing_data.month_vec[index1].this_month, x_position-100, y_position + 10, r, g, b);
-						//DrawText_FTGL_Zero_Padding(index2+1, x_position-70, y_position + 10, r, g, b);
-						float value = 0.001*abs(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[0]);
-						DrawText_FTGL(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[0], x_position + value + 10, y_position + 10, 1.0, 1.0, 1.0);
-						
-						rect = new RECTANGLE();
-						rect->h = 30.0;
-						rect->w = value;
-						rect->x = x_position;
-						rect->y = y_position;
-						color[0] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,0);
-						color[1] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,1);
-						color[2] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,2);
-
-						DrawRectWithOpenGL(rect,color);
-						delete(rect);
-
-						y_position+=35;
-					}					
-					/*
-					x_position = 750;
-					y_position = 150;
-					for(int i=0;i<raw_data_index_2D.size();i++)
-					{				
-						RECTANGLE *rect;
-						int index1 = raw_data_index_2D[i][0];
-						int index2 = raw_data_index_2D[i][1];
-
 						//DrawText_FTGL(preprocessing_data.month_vec[index1].this_year, x_position-150, y_position + 10, r, g, b);
 						//DrawText_FTGL(preprocessing_data.month_vec[index1].this_month, x_position-100, y_position + 10, r, g, b);
 						//DrawText_FTGL(index2+1, x_position-70, y_position + 10, r, g, b);
-						float value = 0.001*abs(preprocessing_data.month_vec[index1].day_vec[index2].data[1]);
-						DrawText_FTGL(preprocessing_data.month_vec[index1].day_vec[index2].data[1], x_position + value + 10, y_position + 10, 1.0, 1.0, 1.0);
+						float value = 0.001*abs(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[1]);
+						DrawText_FTGL(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[1], x_position[1] + value + 10, y_position[1] + 10, 1.0, 1.0, 1.0);
 						
 						rect = new RECTANGLE();
 						rect->h = 30.0;
 						rect->w = value;
-						rect->x = x_position;
-						rect->y = y_position;
+						rect->x = x_position[1];
+						rect->y = y_position[1];
 						color[0] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,0);
 						color[1] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,1);
 						color[2] = preprocessing_data.raw_data_3D_array[index1].at<float>(index2,2);
@@ -128,172 +135,10 @@ namespace OpenGLForm{
 						DrawRectWithOpenGL(rect,color);
 						delete(rect);
 
-						y_position+=35;
+						y_position[1]+=35;
 					}	
 					*/
-
-					/*
-					int index = raw_data_index[0];
-					float factor_g = 10.0;
-					int x_position,y_position;
-					//==========Gravity X Y Z==========//
-					DrawTitle_FTGL(2,70,50);
-					x_position = 70;
-					y_position = 350;
-					for(int j=0;j<raw_data_index.size();j++)
-					{
-						RECTANGLE *rect;
-						index = raw_data_index[j];
-						rect = new RECTANGLE();
-						rect->h = factor_g*abs(preprocessing_data.raw_data_mat.at<float>(index,0));
-						rect->w = 50.0;
-						rect->x = x_position;
-						rect->y = y_position;
-						color[0] = preprocessing_data.raw_data_3D.at<float>(index,0);
-						color[1] = preprocessing_data.raw_data_3D.at<float>(index,1);
-						color[2] = preprocessing_data.raw_data_3D.at<float>(index,2);
-						if(preprocessing_data.raw_data_mat.at<float>(index,0)>0)
-						{
-							rect->y -= factor_g*abs(preprocessing_data.raw_data_mat.at<float>(index,0));
-							float current_position_y = rect->y;
-							double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,0));
-							DrawText_FTGL(nearest,x_position,current_position_y-20);
-						}
-						else
-						{
-							float current_position_y = rect->y + rect->h;
-							double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,0));
-							DrawText_FTGL(nearest,x_position,current_position_y+5);
-						}
-
-						DrawRectWithOpenGL(rect,color);
-						delete(rect);
-
-						x_position+=50;
-					}
-					x_position+=70;
-					//==========Linear Acceleration X Y Z==========//
-					DrawTitle_FTGL(1,750,50);
-					x_position = 750;
-					y_position = 350;
-					int factor_la = 10;
-					for(int j=0;j<raw_data_index.size();j++)
-					{
-						index = raw_data_index[j];
-						RECTANGLE *rect;
-						rect = new RECTANGLE();
-						rect->h = factor_la*abs(preprocessing_data.raw_data_mat.at<float>(index,1));
-						rect->w = 50.0;
-						rect->x = x_position;
-						rect->y = y_position;
-						color[0] = preprocessing_data.raw_data_3D.at<float>(index,0);
-						color[1] = preprocessing_data.raw_data_3D.at<float>(index,1);
-						color[2] = preprocessing_data.raw_data_3D.at<float>(index,2);
-						if(preprocessing_data.raw_data_mat.at<float>(index,1)>0)
-						{
-							rect->y -= factor_la*abs(preprocessing_data.raw_data_mat.at<float>(index,1));
-							float current_position_y = rect->y;
-							double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,1));
-							DrawText_FTGL(nearest,x_position-10,current_position_y-20);
-						} 
-						else
-						{
-							float current_position_y = rect->y + rect->h;
-							double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,1));
-							DrawText_FTGL(nearest,x_position-10,current_position_y+5);
-						}
-
-						DrawRectWithOpenGL(rect,color);
-						delete(rect);
-
-						x_position+=50;
-					}
-					x_position+=100;
-					//==========Gyroscope X Y Z==========//
-					DrawTitle_FTGL(3,70, 450);
-					x_position = 70;
-					y_position = 850;
-					int factor2 = 10;
-					for(int j=0;j<raw_data_index.size();j++)
-					{
-						index = raw_data_index[j];
-						RECTANGLE *rect;
-						rect = new RECTANGLE();
-						rect->h = factor2*abs(preprocessing_data.raw_data_mat.at<float>(index,2));
-						rect->w = 50.0;
-						rect->x = x_position;
-						rect->y = y_position;
-						color[0] = preprocessing_data.raw_data_3D.at<float>(index,0);
-						color[1] = preprocessing_data.raw_data_3D.at<float>(index,1);
-						color[2] = preprocessing_data.raw_data_3D.at<float>(index,2);
-						if(preprocessing_data.raw_data_mat.at<float>(index,2)>0)
-						{
-							rect->y -= factor2*abs(preprocessing_data.raw_data_mat.at<float>(index,2));
-							float current_position_y = rect->y;
-							double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,2));
-							DrawText_FTGL(nearest,x_position,current_position_y-20);
-						}
-						else
-						{
-							float current_position_y = rect->y + rect->h;
-							double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,2));
-							DrawText_FTGL(nearest,x_position,current_position_y+5);
-						}
-
-						DrawRectWithOpenGL(rect,color);
-						delete(rect);
-
-						x_position+=50.0;
-					}
-					x_position+=100;
-					//==========first order of Longitude & Latitude==========//
-					DrawTitle_FTGL(0,750,450);
-					x_position = 750;
-					y_position = 850;	
-						
-					int factor3 = 100.0;
-					for(int j=0;j<raw_data_index.size();j++)
-					{							
-						RECTANGLE *rect;
-						index = raw_data_index[j];
-						float value = abs(preprocessing_data.raw_data_mat.at<float>(index,3));
-						float adj_value = value/10.0;
-						//if(value>1.0)
-						//	adj_value = 1.0;
-						rect = new RECTANGLE();
-						rect->h = factor3*adj_value;
-						rect->w = 50.0;
-						rect->x = x_position;
-						rect->y = y_position;
-						color[0] = preprocessing_data.raw_data_3D.at<float>(index,0);
-						color[1] = preprocessing_data.raw_data_3D.at<float>(index,1);
-						color[2] = preprocessing_data.raw_data_3D.at<float>(index,2);
-						if(adj_value>0.0)
-						{
-							rect->y -= factor3*adj_value;
-							float current_position_y = rect->y;
-							double nearest = round(adj_value);
-							DrawText_FTGL(nearest,x_position,current_position_y-20);
-						}
-						else if(adj_value==0.0)
-						{
-							float current_position_y = rect->y;
-							DrawText_FTGL(0,x_position,current_position_y-20);
-						}
-						else //not enter
-						{
-							float current_position_y = rect->y + rect->h;
-							//double nearest = round(preprocessing_data.raw_data_mat.at<float>(index,3));
-							DrawText_FTGL(preprocessing_data.raw_data_mat.at<float>(index,3),x_position,current_position_y+5);
-						}
-
-						DrawRectWithOpenGL(rect,color);
-						delete(rect);
-
-						x_position+=50;
-					}
-					x_position+=70;		
-				*/	
+					
 			}
 			
 			SwapOpenGLBuffers();
@@ -346,7 +191,7 @@ namespace OpenGLForm{
 		{
 			glPushMatrix();
 
-			float font_size = 20*(scale_factor[2]+0.4+scale_x[2]);
+			float font_size = 16*(scale_factor[2]+0.4+scale_x[2]);
 			font.FaceSize(font_size);
 			glColor3f(1.0, 1.0, 1.0);
 			glRasterPos2f(x , y + font.LineHeight());
@@ -357,10 +202,22 @@ namespace OpenGLForm{
 
 		System::Void DetailVisualization::title_string()
 		{
-			strcpy(title[0],"First Order of Distance");
-			strcpy(title[1],"Linear Acceleration");
-			strcpy(title[2],"Gravity");
-			strcpy(title[3],"Gyroscope");
+			//strcpy(title[0],"住宅區 (進站)");
+			//strcpy(title[1],"住宅區 (出站)");
+			//strcpy(title[2],"辦公/學校 (進站)");
+			//strcpy(title[3],"辦公/學校 (出站)");
+			//strcpy(title[4],"觀光區 (進站)");
+			//strcpy(title[5],"觀光區 (出站)");
+			strcpy(title[0],"Residential (In)");
+			strcpy(title[1],"Residential (Out)");
+			strcpy(title[2],"Commercial/School (In)");
+			strcpy(title[3],"Commercial/School (Out)");
+			strcpy(title[4],"Tourism (In)");
+			strcpy(title[5],"Tourism (Out)");
+			//strcpy(title[0],"First Order of Distance");
+			//strcpy(title[1],"Linear Acceleration");
+			//strcpy(title[2],"Gravity");
+			//strcpy(title[3],"Gyroscope");
 		}
 
 		System::Void DetailVisualization::DrawLine(int x1,int y1,int x2,int y2)
