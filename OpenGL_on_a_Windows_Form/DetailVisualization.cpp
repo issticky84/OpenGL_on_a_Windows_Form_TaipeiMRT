@@ -38,7 +38,7 @@ namespace OpenGLForm{
 			//DrawLine(0,480,windowWidth[2]*2,480);
 			//DrawLine(450,0,450,1000);
 			
-			/*
+			
 			if(!raw_data_index_2D.empty())
 			{	
 					int x_position = 200;
@@ -48,7 +48,25 @@ namespace OpenGLForm{
 						RECTANGLE *rect;
 						int index1 = raw_data_index_2D[i][0];
 						int index2 = raw_data_index_2D[i][1];
+						int count = 0;
+						int month,day;
+						for(int i=0;i<preprocessing_data.month_vec.size();i++)
+						{
+							for(int j=0;j<preprocessing_data.month_vec[i].day_vec.size();j++)
+							{
+								if(count==index1)
+								{
+									month = i;
+									day = j;
+									break;
+								}
+								count++;
+							}
+							if(count==index1) break;
+						}
+
 						int r=1.0,g=1.0,b=1.0;
+						/*
 						if(preprocessing_data.month_vec[index1].day_vec[index2].IsHoliday)
 						{
 							r = g = 0.0;
@@ -62,11 +80,12 @@ namespace OpenGLForm{
 							r = 1.0;
 							g = b = 0.0;
 						}
-						DrawText_FTGL(preprocessing_data.month_vec[index1].this_year, x_position-150, y_position + 10, r, g, b);
-						DrawText_FTGL_Zero_Padding(preprocessing_data.month_vec[index1].this_month, x_position-100, y_position + 10, r, g, b);
-						DrawText_FTGL_Zero_Padding(index2+1, x_position-70, y_position + 10, r, g, b);
-						float value = 0.001*abs(preprocessing_data.month_vec[index1].day_vec[index2].data[0]);
-						DrawText_FTGL(preprocessing_data.month_vec[index1].day_vec[index2].data[0], x_position + value + 10, y_position + 10, 1.0, 1.0, 1.0);
+						*/
+						//DrawText_FTGL(preprocessing_data.month_vec[index1].this_year, x_position-150, y_position + 10, r, g, b);
+						//DrawText_FTGL_Zero_Padding(preprocessing_data.month_vec[index1].this_month, x_position-100, y_position + 10, r, g, b);
+						//DrawText_FTGL_Zero_Padding(index2+1, x_position-70, y_position + 10, r, g, b);
+						float value = 0.001*abs(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[0]);
+						DrawText_FTGL(preprocessing_data.month_vec[month].day_vec[day].hour_vec[index2].data[0], x_position + value + 10, y_position + 10, 1.0, 1.0, 1.0);
 						
 						rect = new RECTANGLE();
 						rect->h = 30.0;
@@ -82,7 +101,7 @@ namespace OpenGLForm{
 
 						y_position+=35;
 					}					
-					
+					/*
 					x_position = 750;
 					y_position = 150;
 					for(int i=0;i<raw_data_index_2D.size();i++)
@@ -274,9 +293,9 @@ namespace OpenGLForm{
 						x_position+=50;
 					}
 					x_position+=70;		
-					
+				*/	
 			}
-			*/
+			
 			SwapOpenGLBuffers();
 			
 		}

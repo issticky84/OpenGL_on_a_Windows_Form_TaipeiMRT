@@ -70,25 +70,36 @@ void Preprocessing_Data::start3(vector<month> month_vec_read,int day_amount_read
 		{
 			for(int u=0;u<24;u++)
 			{
+				month_vec[i].day_vec[j].hour_vec[u].dim = 6;
+				for(int s=0;s<6;s++)
+				{
+					month_vec[i].day_vec[j].hour_vec[u].data[s] = 0;
+				}
 				for(int s=0;s<home_num;s++)
 				{
-					model.at<float>(t,0) = month_vec[i].day_vec[j].hour_vec[u].enter[ home[s] ];
-					model.at<float>(t,1) = month_vec[i].day_vec[j].hour_vec[u].out[ home[s] ];
+					month_vec[i].day_vec[j].hour_vec[u].data[0] += month_vec[i].day_vec[j].hour_vec[u].enter[ home[s] ];
+					month_vec[i].day_vec[j].hour_vec[u].data[1] += month_vec[i].day_vec[j].hour_vec[u].out[ home[s] ];
 				}
 				for(int s=0;s<work_school_num;s++)
 				{
-					model.at<float>(t,2) = month_vec[i].day_vec[j].hour_vec[u].enter[ work_school[s] ];
-					model.at<float>(t,3) = month_vec[i].day_vec[j].hour_vec[u].out[ work_school[s] ];
+					month_vec[i].day_vec[j].hour_vec[u].data[2] += month_vec[i].day_vec[j].hour_vec[u].enter[ work_school[s] ];
+					month_vec[i].day_vec[j].hour_vec[u].data[3] += month_vec[i].day_vec[j].hour_vec[u].out[ work_school[s] ];
 				}
 				for(int s=0;s<tour_num;s++)
 				{
-					model.at<float>(t,4) = month_vec[i].day_vec[j].hour_vec[u].enter[ tour[s] ];
-					model.at<float>(t,5) = month_vec[i].day_vec[j].hour_vec[u].out[ tour[s] ];
+					month_vec[i].day_vec[j].hour_vec[u].data[4] = month_vec[i].day_vec[j].hour_vec[u].enter[ tour[s] ];
+					month_vec[i].day_vec[j].hour_vec[u].data[5] = month_vec[i].day_vec[j].hour_vec[u].out[ tour[s] ];
+				}
+				for(int s=0;s<6;s++)
+				{
+					model.at<float>(t,s) = month_vec[i].day_vec[j].hour_vec[u].data[s];
 				}
 				t++;
 			}
 		}
 	}
+
+	output_mat_as_csv_file_float("model_original.csv",model);
 
 	for(int i=0;i<model.cols;i++)
 	{

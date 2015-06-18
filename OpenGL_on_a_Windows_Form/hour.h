@@ -11,7 +11,8 @@ public:
 	int date;
 	int enter[200];
 	int out[200];
-
+	int data[100];
+	int dim;
 };
 
 #endif
